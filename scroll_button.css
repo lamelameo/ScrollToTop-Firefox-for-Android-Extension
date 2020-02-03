@@ -1,0 +1,20 @@
+#scrollTopButton {
+    display: none;
+    background: url("images/button2.png");
+    background-repeat: no-repeat;
+    background-position: center; 
+    box-shadow: 0px 0px 2px rgb(0, 0, 0);
+    /* background-color: rgba(222, 222, 222, 0.8); */
+    /* color: rgb(0, 0, 0); */
+    font-size: medium;
+    text-align: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 0px solid rgb(222, 222, 222);
+    overflow: hidden;
+  }
+  
+  /* #scrollTopButton:hover {
+    background-color: rgba(61, 61, 61, 0.8);
+  } */

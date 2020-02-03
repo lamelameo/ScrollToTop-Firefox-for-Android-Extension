@@ -1,0 +1,40 @@
+{
+
+    "manifest_version": 2,
+    "name": "ScrollToTop",
+    "version": "1.0",
+
+    "browser_specific_settings": {
+      "gecko": {
+        "id": "scrolltotop@lameo.com",
+        "strict_min_version": "54.0"
+      }
+    },
+  
+    "description": "Adds a scroll to top button for the mozilla browser that mimics the android version.",
+  
+    "icons": {
+      "48": "icons/icon48.png",
+      "96": "icons/icon96.png"
+    },
+    
+    "permisisons": [
+        "activeTab",
+        "tabs"
+    ],
+
+    "web_accessible_resources": [
+      "scroll_button.js", 
+      "scroll_button.css",
+      "images"
+    ],
+
+    "content_scripts": [
+      {
+        "matches": ["<all_urls>"],
+        "css": ["scroll_button.css"],
+        "js": ["content.js"]
+      }
+    ]
+  
+  }

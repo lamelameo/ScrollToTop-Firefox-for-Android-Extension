@@ -16,8 +16,14 @@ var intButtonWidth = scrollButton.offsetWidth;
 var alignLeft = (intFrameWidth - intButtonWidth)/2;
 scrollButton.style.left = alignLeft.toString(10)+"px";
 
-// PROBLEM: sites such as reddit and google images open a new overlays when you click a links,
-// which then stops our content script from recieving scroll events - HOW to fix?
+// PROBLEM: sites such as reddit and google images make hidden content visible when you click links
+// which then stops our content script from recieving scroll events - presumably since they consume
+// the events before they bubble back to our button appended directly to body of document.
+// Think you can catch the event on its way down first, but we would want to make the button appear
+// over the new content and scroll inside that container not the original one. Example: reddit makes
+// a hidden scroll container visible over the main page which is itself scrollable, which we would want 
+// to catch the events make our button appear higher than it, (it should since that element is not fixed)
+// and then when clicked it should scroll in this container not the now background reddit homepage
 
 // show scroll to top button if user scrolls then hide scroll button after 1 second of scrolling stopping
 var isScrolling;
@@ -67,7 +73,3 @@ scrollInterceptor.addEventListener("scroll", (e) => {
     console.log("scroll intercepted");
 })
 document.body.appendChild(scrollInterceptor);
-
-
-// capture scroll before it hits any other divs??
-// window.addEventListener("scroll", )

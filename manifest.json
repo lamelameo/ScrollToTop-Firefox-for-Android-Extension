@@ -11,21 +11,18 @@
       }
     },
   
-    "description": "Adds a scroll to top button for the mozilla browser that mimics the android version.",
+    "description": "Adds a scroll to top button for the mozilla browser.",
   
     "icons": {
-      "48": "icons/icon48.png",
-      "96": "icons/icon96.png"
+      "48": "icons/icon_48.png",
+      "96": "icons/icon_96.png"
     },
     
     "permisisons": [
-        "activeTab",
-        "tabs"
+        "activeTab"
     ],
 
     "web_accessible_resources": [
-      "scroll_button.js", 
-      "scroll_button.css",
       "images"
     ],
 
@@ -33,7 +30,7 @@
       {
         "matches": ["<all_urls>"],
         "css": ["scroll_button.css"],
-        "js": ["content.js"]
+        "js": ["scroll_button.js"]
       }
     ]
   

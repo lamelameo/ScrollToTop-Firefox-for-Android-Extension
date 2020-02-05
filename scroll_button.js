@@ -27,7 +27,7 @@ scrollButton.style.left = alignLeft.toString(10)+"px";
 
 // show scroll to top button if user scrolls then hide scroll button after 1 second of scrolling stopping
 var isScrolling;
-buttonShown = false;
+var buttonShown = false;
 window.addEventListener("scroll", function (event) {
     showButton();
     // use delayed calls and clear any existing calls if scroll occurs
@@ -38,38 +38,44 @@ window.addEventListener("scroll", function (event) {
     }, 1000);
 }, false);
 
-// shows button if hidden
+// show or hide button
 function showButton() {
-    if (buttonShown) {
-            return;
-    }
-    if (document.body.scrollTop > 10 || document.documentElement.scrollTop > 10) {
-        scrollButton.style.visibility = "visible";
-        buttonShown = true;
+    // if button is below threshold and not already shown, then make it visible
+    if (document.documentElement.scrollTop > 50 || document.body.scrollTop > 50) {
+        if (!buttonShown) {
+            scrollButton.style.visibility = "visible";
+            buttonShown = true;
+        }
+    // if button is above threshold and shown, make it hidden
     } else {
-        scrollButton.style.visibility = "hidden";
+        if (buttonShown) {
+            scrollButton.style.visibility = "hidden";
+            buttonShown = false;
+        }
     }
 }
 
-// scrolls to top of page and hides button
+// scrolls to top of page
 function scrollFunction() {
     window.scroll({
         left: 0,
         top: 0,
         behavior: "smooth"
     });
-    scrollButton.style.visibility = "hidden";
-    buttonShown = false;
+    // scrollButton.blur();
 }
 
 // use a div to cover the whole browser to ensure no popup elements catch scrolls before we do
-var scrollInterceptor = document.createElement("div");
-scrollInterceptor.id = "scrollInterceptor";
-scrollInterceptor.style.position = "fixed";
-scrollInterceptor.style.zIndex = "999";
-scrollInterceptor.style.width = intFrameWidth;
-scrollInterceptor.style.height = intFrameHeight;
-scrollInterceptor.addEventListener("scroll", (e) => {
-    console.log("scroll intercepted");
-})
-document.body.appendChild(scrollInterceptor);
+// var scrollInterceptor = document.createElement("div");
+// scrollInterceptor.display = "block";
+// scrollInterceptor.id = "scrollInterceptor";
+// scrollInterceptor.style.position = "fixed";
+// scrollInterceptor.style.zIndex = "999";
+// // console.log(intFrameWidth);
+// // console.log(intFrameHeight);
+// scrollInterceptor.style.width = intFrameWidth;
+// scrollInterceptor.style.height = intFrameHeight;
+// scrollInterceptor.addEventListener("scroll", (e) => {
+//     console.log("scroll intercepted");
+// })
+// document.body.appendChild(scrollInterceptor);

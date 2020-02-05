@@ -13,12 +13,23 @@
     width: 40px;
     height: 40px;
     bottom: 10px;
-    z-index: 999;
+    z-index: 99999;
     border-radius: 50%;
-    border: 0px solid rgb(222, 222, 222);
+    border: 0px; /* solid rgb(222, 222, 222); */
+    padding: 0px;
     overflow: hidden;
   }
-  
-  /* #scrollTopButton:hover {
-    background-color: rgba(61, 61, 61, 0.8);
-  } */
+
+/* remove dotted outline when button is clicked */
+#scrollTopButton::-moz-focus-inner {
+  border: 0;
+}
+
+#scrollTopButton:focus {
+  outline: 0;
+  /* box-shadow: 0px 0px 10px rgb(132, 0, 255); */
+} 
+
+#scrollTopButton:active {
+  outline: 0;
+}

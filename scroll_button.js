@@ -6,8 +6,6 @@ scrollButton.id = "scrollTopButton";
 scrollButton.onclick = function() {scrollFunction()};
 document.body.appendChild(scrollButton);
 
-// TODO: insert <div> <style> <button> ??
-
 // get browser inner dimensions so we can position the button appropriately at centre of the window
 // NOTE: will be positioned wrong if window is not maximised, shouldnt be a problem for mobile?
 var intFrameWidth = window.innerWidth;
@@ -28,7 +26,14 @@ scrollButton.style.left = alignLeft.toString(10)+"px";
 // show scroll to top button if user scrolls then hide scroll button after 1 second of scrolling stopping
 var isScrolling;
 var buttonShown = false;
+var scrollTarget;
 window.addEventListener("scroll", function (event) {
+    scrolledElement = event.target;
+    if (scrollTarget != scrolledElement) {
+        scrollTarget = scrolledElement;
+    }
+    console.log(event.target);
+    // console.log(window.top);
     showButton();
     // use delayed calls and clear any existing calls if scroll occurs
     window.clearTimeout(isScrolling);
@@ -36,12 +41,16 @@ window.addEventListener("scroll", function (event) {
         buttonShown = false;
         scrollButton.style.visibility = "hidden";
     }, 1000);
-}, false);
+}, true);
+
+// BUG: reddit - keep at top of page and click thread, then when we scroll in overlay, button doesnt 
+// appear as document.scrolltop is at 0 for the main page
 
 // show or hide button
 function showButton() {
     // if button is below threshold and not already shown, then make it visible
-    if (document.documentElement.scrollTop > 50 || document.body.scrollTop > 50) {
+    if (scrollTarget.scrollTop > 50 || document.body.scrollTop > 50) {
+        // console.log('show button?');
         if (!buttonShown) {
             scrollButton.style.visibility = "visible";
             buttonShown = true;
@@ -57,7 +66,7 @@ function showButton() {
 
 // scrolls to top of page
 function scrollFunction() {
-    window.scroll({
+    scrollTarget.scroll({
         left: 0,
         top: 0,
         behavior: "smooth"
@@ -65,17 +74,10 @@ function scrollFunction() {
     // scrollButton.blur();
 }
 
-// use a div to cover the whole browser to ensure no popup elements catch scrolls before we do
-// var scrollInterceptor = document.createElement("div");
-// scrollInterceptor.display = "block";
-// scrollInterceptor.id = "scrollInterceptor";
-// scrollInterceptor.style.position = "fixed";
-// scrollInterceptor.style.zIndex = "999";
-// // console.log(intFrameWidth);
-// // console.log(intFrameHeight);
-// scrollInterceptor.style.width = intFrameWidth;
-// scrollInterceptor.style.height = intFrameHeight;
-// scrollInterceptor.addEventListener("scroll", (e) => {
-//     console.log("scroll intercepted");
-// })
-// document.body.appendChild(scrollInterceptor);
+let scrollableElement = document.querySelector("[overflow-y]");
+console.log("scroll element: " + scrollableElement);
+
+// var iframe = document.querySelector("iframe");
+// iframe.addEventListener("mozbrowserscrollviewchanged", function(event) {
+//     console.log("new scroll area: "+ event.details.width);
+// });

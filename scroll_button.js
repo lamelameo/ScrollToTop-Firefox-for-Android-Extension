@@ -14,26 +14,31 @@ var intButtonWidth = scrollButton.offsetWidth;
 var alignLeft = (intFrameWidth - intButtonWidth)/2;
 scrollButton.style.left = alignLeft.toString(10)+"px";
 
-// PROBLEM: sites such as reddit and google images make hidden content visible when you click links
-// which then stops our content script from recieving scroll events - presumably since they consume
-// the events before they bubble back to our button appended directly to body of document.
-// Think you can catch the event on its way down first, but we would want to make the button appear
-// over the new content and scroll inside that container not the original one. Example: reddit makes
-// a hidden scroll container visible over the main page which is itself scrollable, which we would want 
-// to catch the events make our button appear higher than it, (it should since that element is not fixed)
-// and then when clicked it should scroll in this container not the now background reddit homepage
-
 // show scroll to top button if user scrolls then hide scroll button after 1 second of scrolling stopping
 var isScrolling;
 var buttonShown = false;
 var scrollTarget;
+var scrollDoc;
+// var bubbles;
 window.addEventListener("scroll", function (event) {
-    scrolledElement = event.target;
-    if (scrollTarget != scrolledElement) {
-        scrollTarget = scrolledElement;
+    scrollDoc = event.target;
+    console.log(event);
+    if (scrollTarget != event.target) {
+        scrollTarget = event.target;
+        // bubbles = true;
+        if (event.target instanceof HTMLDocument) {
+            console.log('bad');
+            scrollTarget = window;
+            scrollDoc = document.documentElement;
+            // bubbles = false
+        }
     }
-    console.log(event.target);
-    // console.log(window.top);
+    
+    // ignore scroll to top induced scroll calls
+    // if (event.detail == "scroll to top") {
+    //     console.log('ahhh');
+    //     return;
+    // }
     showButton();
     // use delayed calls and clear any existing calls if scroll occurs
     window.clearTimeout(isScrolling);
@@ -49,7 +54,7 @@ window.addEventListener("scroll", function (event) {
 // show or hide button
 function showButton() {
     // if button is below threshold and not already shown, then make it visible
-    if (scrollTarget.scrollTop > 50 || document.body.scrollTop > 50) {
+    if (scrollDoc.scrollTop > 50 || document.body.scrollTop > 50) {
         // console.log('show button?');
         if (!buttonShown) {
             scrollButton.style.visibility = "visible";
@@ -66,18 +71,25 @@ function showButton() {
 
 // scrolls to top of page
 function scrollFunction() {
+    // scrollTarget.dispatchEvent(new CustomEvent("scroll", {
+    //     // isTrusted: true,
+    //     left: 0,
+    //     top: 0,
+    //     behavior: "smooth",
+    //     detail: "scroll to top",
+    //     bubbles: true,
+    //     cancelable: true
+    // }));
+
     scrollTarget.scroll({
         left: 0,
         top: 0,
         behavior: "smooth"
     });
-    // scrollButton.blur();
+    scrollButton.blur();
+    // scrollButton.visibility = "hidden";
+    // buttonShown = false;
 }
 
-let scrollableElement = document.querySelector("[overflow-y]");
-console.log("scroll element: " + scrollableElement);
-
-// var iframe = document.querySelector("iframe");
-// iframe.addEventListener("mozbrowserscrollviewchanged", function(event) {
-//     console.log("new scroll area: "+ event.details.width);
-// });
+// let scrollableElement = document.querySelector("[overflow-y]");
+// console.log("scroll element: " + scrollableElement);

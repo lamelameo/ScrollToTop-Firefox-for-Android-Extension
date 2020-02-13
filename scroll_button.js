@@ -1,61 +1,44 @@
-
 // SETUP
 console.log("setup started");
 scrollButton = document.createElement("BUTTON");
 scrollButton.id = "scrollTopButton";
-scrollButton.onclick = function() {scrollFunction()};
+scrollButton.addEventListener("click", scrollFunction, false);
 document.body.appendChild(scrollButton);
+window.addEventListener("scroll", scrollListener, true);
 
 // get browser inner dimensions so we can position the button appropriately at centre of the window
 // NOTE: will be positioned wrong if window is not maximised, shouldnt be a problem for mobile?
-var intFrameWidth = window.innerWidth;
-var intFrameHeight = window.innerHeight;
-var intButtonWidth = scrollButton.offsetWidth;
-var alignLeft = (intFrameWidth - intButtonWidth)/2;
-scrollButton.style.left = alignLeft.toString(10)+"px";
+var scrollButtonalignLeft = (window.innerWidth - scrollButton.offsetWidth)/2;
+scrollButton.style.left = scrollButtonalignLeft.toString(10)+"px";
 
-// show scroll to top button if user scrolls then hide scroll button after 1 second of scrolling stopping
+// set global variables so scroll button can target elements which are being scrolled
 var isScrolling;
 var buttonShown = false;
+var scrolledElement;
 var scrollTarget;
-var scrollDoc;
-// var bubbles;
-window.addEventListener("scroll", function (event) {
-    scrollDoc = event.target;
+// listen for scroll events, determine and store the target, and show the scroll button
+// hide scroll button after 1 second of scrolling stopping
+function scrollListener(event) {
     console.log(event);
-    if (scrollTarget != event.target) {
+    // only update variables if the scrolled element has changed since last scroll event
+    if (scrolledElement != event.target) {
+        scrolledElement = event.target;
         scrollTarget = event.target;
-        // bubbles = true;
+        // if scrolled element is HTMLDocument, we need to change variables so operations work
         if (event.target instanceof HTMLDocument) {
-            console.log('bad');
             scrollTarget = window;
-            scrollDoc = document.documentElement;
-            // bubbles = false
         }
     }
     
-    // ignore scroll to top induced scroll calls
-    // if (event.detail == "scroll to top") {
-    //     console.log('ahhh');
-    //     return;
-    // }
-    showButton();
-    // use delayed calls and clear any existing calls if scroll occurs
-    window.clearTimeout(isScrolling);
-    isScrolling = this.setTimeout(function() {
-        buttonShown = false;
-        scrollButton.style.visibility = "hidden";
-    }, 1000);
-}, true);
+    // get current scroll position of scrolled element - should be cross browser compatible
+    if (event.target instanceof HTMLDocument) {
+        scrolledY = window.scrollY
+    } else {
+        scrolledY = event.target.scrollTop;
+    }
 
-// BUG: reddit - keep at top of page and click thread, then when we scroll in overlay, button doesnt 
-// appear as document.scrolltop is at 0 for the main page
-
-// show or hide button
-function showButton() {
     // if button is below threshold and not already shown, then make it visible
-    if (scrollDoc.scrollTop > 50 || document.body.scrollTop > 50) {
-        // console.log('show button?');
+    if (scrolledY > 50) {
         if (!buttonShown) {
             scrollButton.style.visibility = "visible";
             buttonShown = true;
@@ -67,29 +50,27 @@ function showButton() {
             buttonShown = false;
         }
     }
+
+    // use delayed calls and clear any existing calls if scroll occurs
+    window.clearTimeout(isScrolling);
+    isScrolling = this.setTimeout(function() {
+        buttonShown = false;
+        scrollButton.style.visibility = "hidden";
+    }, 1000);
 }
 
-// scrolls to top of page
+// scrolls to top of page, tried to accomodate browsers which dont allow options
 function scrollFunction() {
-    // scrollTarget.dispatchEvent(new CustomEvent("scroll", {
-    //     // isTrusted: true,
-    //     left: 0,
-    //     top: 0,
-    //     behavior: "smooth",
-    //     detail: "scroll to top",
-    //     bubbles: true,
-    //     cancelable: true
-    // }));
-
-    scrollTarget.scroll({
+    // console.log('scroll to top')
+    try {
+        scrollTarget.scroll({
         left: 0,
         top: 0,
         behavior: "smooth"
-    });
-    scrollButton.blur();
-    // scrollButton.visibility = "hidden";
-    // buttonShown = false;
+        });
+    } catch (error) {
+        scrollTarget.scroll(0,0);
+    }
+    // remove focus of the button
+    document.getElementById("scrollTopButton").blur();
 }
-
-// let scrollableElement = document.querySelector("[overflow-y]");
-// console.log("scroll element: " + scrollableElement);

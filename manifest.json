@@ -23,13 +23,12 @@
     },
 
     "web_accessible_resources": [
-      "images",
-      "blocked_sites.txt"
+      "images"
     ],
 
-    "browser_action": {
-      "default_title": "Scroll To Top",
-      "default_popup": "popup.html"
+    "options_ui": {
+      "page": "options_page.html",
+      "browser_style": true
     },
 
     "content_scripts": [

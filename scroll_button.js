@@ -1,15 +1,13 @@
 // SETUP
 console.log("setup started");
+var scrollDiv = document.createElement("div");
+scrollDiv.id = "scrollDiv";
 scrollButton = document.createElement("BUTTON");
 scrollButton.id = "scrollTopButton";
 scrollButton.addEventListener("click", scrollFunction, false);
-document.body.appendChild(scrollButton);
+scrollDiv.appendChild(scrollButton);
+document.body.appendChild(scrollDiv);
 window.addEventListener("scroll", scrollListener, true);
-
-// get browser inner dimensions so we can position the button appropriately at centre of the window
-// NOTE: will be positioned wrong if window is not maximised, shouldnt be a problem for mobile?
-var scrollButtonalignLeft = (window.innerWidth - scrollButton.offsetWidth)/2;
-scrollButton.style.left = scrollButtonalignLeft.toString(10)+"px";
 
 // set global variables so scroll button can target elements which are being scrolled
 var isScrolling;
@@ -19,7 +17,6 @@ var scrollTarget;
 // listen for scroll events, determine and store the target, and show the scroll button
 // hide scroll button after 1 second of scrolling stopping
 function scrollListener(event) {
-    console.log(event);
     // only update variables if the scrolled element has changed since last scroll event
     if (scrolledElement != event.target) {
         scrolledElement = event.target;
@@ -59,7 +56,7 @@ function scrollListener(event) {
     }, 1000);
 }
 
-// scrolls to top of page, tried to accomodate browsers which dont allow options
+// scrolls to top of page, tried to accomodate browsers which dont allow options with .scroll method
 function scrollFunction() {
     // console.log('scroll to top')
     try {
@@ -69,6 +66,7 @@ function scrollFunction() {
         behavior: "smooth"
         });
     } catch (error) {
+        console.log(error);
         scrollTarget.scroll(0,0);
     }
     // remove focus of the button

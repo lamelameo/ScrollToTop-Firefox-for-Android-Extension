@@ -1,7 +1,7 @@
-// SETUP
-console.log("setup started");
+// Setup
+console.log("scrollToTop setup.");
 var scrollDiv = document.createElement("div");
-scrollDiv.id = "scrollDiv";
+scrollDiv.id = "scrollButtonDiv";
 scrollButton = document.createElement("BUTTON");
 scrollButton.id = "scrollTopButton";
 scrollButton.addEventListener("click", scrollFunction, false);
@@ -27,7 +27,7 @@ function scrollListener(event) {
         }
     }
     
-    // get current scroll position of scrolled element - should be cross browser compatible
+    // get current scroll position of scrolled element, should be cross browser compatible using scrollY
     if (event.target instanceof HTMLDocument) {
         scrolledY = window.scrollY
     } else {
@@ -48,7 +48,7 @@ function scrollListener(event) {
         }
     }
 
-    // use delayed calls and clear any existing calls if scroll occurs
+    // use delayed call to hide button after 1s, clear any existing calls as we have resumed scrolling
     window.clearTimeout(isScrolling);
     isScrolling = this.setTimeout(function() {
         buttonShown = false;
@@ -56,7 +56,7 @@ function scrollListener(event) {
     }, 1000);
 }
 
-// scrolls to top of page, tried to accomodate browsers which dont allow options with .scroll method
+// scrolls to top of page, tried to accommodate browsers which dont allow options with .scroll method
 function scrollFunction() {
     // console.log('scroll to top')
     try {
@@ -66,9 +66,9 @@ function scrollFunction() {
         behavior: "smooth"
         });
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         scrollTarget.scroll(0,0);
     }
-    // remove focus of the button
+    // remove focus of the button or we get annoying dotted outline on mobile
     document.getElementById("scrollTopButton").blur();
 }

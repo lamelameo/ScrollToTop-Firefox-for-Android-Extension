@@ -6,7 +6,8 @@ Download and install the extension manually following these [instructions](https
 Or wait for a release on the Mozilla Extensions page: https://addons.mozilla.org/en-US/android/
 
 Screenshot of extension on Firefox for Android:
-![alt_text](unused/android_screenshot.jpg)
+
+![alt_text](screenshots/android_screenshot.jpg)
 
 Gif of the functionality of the button on Mozilla on desktop:
-![alt_text](unused/screencapture.gif)
+![alt_text](screenshots/screencapture.gif)

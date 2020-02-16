@@ -26,11 +26,6 @@
       "images"
     ],
 
-    "options_ui": {
-      "page": "options_page.html",
-      "browser_style": true
-    },
-
     "content_scripts": [
       {
         "matches": ["<all_urls>"],
@@ -40,3 +35,4 @@
     ]
   
   }
+  

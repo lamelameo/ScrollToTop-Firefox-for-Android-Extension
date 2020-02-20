@@ -6,8 +6,8 @@ A browser extension intended for the ***Firefox for Android*** browser for mobil
 - Button will hide itself after 1 second if no more scrolling occurs or the page is scrolled above the threshold again.
 - The scrolling will apply to whichever element was last scrolled, see below for an example with Google Images.
 
-Download and install the extension manually following these [instructions](https://extensionworkshop.com/documentation/develop/developing-extensions-for-firefox-for-android/) using the following: icons, images, manifest.json, scroll_button.css, scroll-button.js.
-Or wait for a release on: https://addons.mozilla.org/en-US/android/
+Download the extension at: https://addons.mozilla.org/en-US/android/addon/scroll-to-top-android/
+Or download and install manually by following these [instructions](https://extensionworkshop.com/documentation/develop/developing-extensions-for-firefox-for-android/) using the following: icons, images, manifest.json, scroll_button.css, scroll-button.js.
 
 Screenshot of extension on Firefox for Android:  
 ![alt_text](screenshots/android_screenshot.jpg)

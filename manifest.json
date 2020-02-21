@@ -2,7 +2,7 @@
 
     "manifest_version": 2,
     "name": "ScrollToTop",
-    "version": "1.0",
+    "version": "1.1",
     
     "description": "Adds a scroll to top button for the Mozilla Firefox browser. Intended for Firefox for Android.",
     "homepage_url": "https://github.com/lamelameo/ScrollToTop-Firefox-for-Android-Extension",
